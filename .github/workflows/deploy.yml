@@ -15,10 +15,10 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t jimmy1204/microservice-create-product:latest .
+        run: docker build -t jimmy1204/microservice-delete-product:latest .
 
       - name: Push Docker Image
-        run: docker push jimmy1204/microservice-create-product:latest
+        run: docker push jimmy1204/microservice-delete-product:latest
 
   deploy-to-ec2:
     needs: build-and-push-image
@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             # 1) Bajar la imagen de Docker Hub
-            docker pull jimmy1204/microservice-create-product:latest
+            docker pull jimmy1204/microservice-delete-product:latest
 
             # 2) Detener y eliminar contenedor previo
             docker stop product_container || true
@@ -50,5 +50,5 @@ jobs:
             # 4) Correr contenedor usando ese .env
             docker run -d --name product_container \
               --env-file .env \
-              -p 8081:8081 \
-              jimmy1204/microservice-create-product:latest
+              -p 8083:8083 \
+              jimmy1204/microservice-delete-product:latest
