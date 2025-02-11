@@ -1,31 +1,25 @@
-
 const Product = require("../models/productModel");
 
+// Función para eliminar un producto
 const deleteProduct = async (req, res) => {
   try {
-    // Extraemos el ID del producto desde los parámetros de la URL
-    const { id } = req.params;
+    const { id } = req.params;  // Obtener el id del producto desde la URL
 
-    // Validamos que el ID esté presente
-    if (!id) {
-      return res.status(400).json({
-        message: "El ID del producto es obligatorio."
-      });
-    }
+    // Buscar el producto en la base de datos
+    const product = await Product.findByPk(id);
 
-    // Buscamos y eliminamos el producto
-    const deletedProduct = await Product.findByIdAndDelete(id);
-
-    // Verificamos si el producto existía
-    if (!deletedProduct) {
+    // Si no se encuentra el producto, devolver un error
+    if (!product) {
       return res.status(404).json({
         message: "Producto no encontrado."
       });
     }
 
+    // Eliminar el producto de la base de datos
+    await product.destroy();
+
     return res.status(200).json({
-      message: "Producto eliminado exitosamente.",
-      product: deletedProduct
+      message: "Producto eliminado exitosamente."
     });
   } catch (error) {
     console.error("Error al eliminar producto:", error);
