@@ -52,6 +52,6 @@ The application will run at: http://localhost:8083
 
 ## API Usage
 ### Create a Product
-Endpoint: POST /api/products/:productId
+Endpoint: DELETE /api/products/:productId
 
 This endpoint allows you to delete a product in the database using the provided data.
